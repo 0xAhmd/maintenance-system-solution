@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<link rel="stylesheet" href="main.css">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>عربيتي - نظام إدارة الصيانة</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        * {
+            font-family: 'Cairo', sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            height: 100vh;
+            width: 260px;
+            background-color: #212529;
+            padding-top: 20px;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .sidebar-brand {
+            padding: 15px 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 20px;
+        }
+
+        .sidebar .nav-link {
+            color: #adb5bd;
+            padding: 12px 20px;
+            margin: 5px 10px;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .sidebar .nav-link:hover {
+            background-color: rgba(13, 110, 253, 0.1);
+            color: #0d6efd;
+        }
+
+        .sidebar .nav-link.active {
+            background-color: #0d6efd;
+            color: white;
+        }
+
+        .navbar {
+            margin-right: 260px;
+            background-color: white !important;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+        }
+
+        .main-content {
+            margin-right: 260px;
+            padding: 30px;
+            margin-top: 70px;
+        }
+
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
+        }
+
+        .stats-card {
+            transition: all 0.3s;
+        }
+
+        .stats-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+        }
+
+        .modal-content {
+            border-radius: 12px;
+        }
+
+        .modal-header {
+            background-color: #0d6efd;
+            color: white;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .modal-header .btn-close {
+            filter: brightness(0) invert(1);
+        }
+
+        .vehicle-icon-large {
+            font-size: 100px;
+            color: #0d6efd;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: start;
+            margin-bottom: 1.5rem;
+        }
+
+        .info-icon {
+            font-size: 2rem;
+            margin-left: 1rem;
+            min-width: 40px;
+        }
+
+        .border-start-custom {
+            border-right-width: 4px !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-brand text-white">
+            <h4 class="fw-bold"><i class="bi bi-gear-fill me-2"></i>نظام الصيانة</h4>
+            <p class="small text-muted mb-0">لوحة السائق</p>
+        </div>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link active" href="my-vehicle.html">
+                    <i class="bi bi-car-front me-2"></i>عربيتي
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="my-maintenance.html">
+                    <i class="bi bi-tools me-2"></i>سجل الصيانة
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#requestMaintenanceModal">
+                    <i class="bi bi-plus-circle me-2"></i>طلب صيانة
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-light bg-light fixed-top">
+        <div class="container-fluid">
+            <h5 class="mb-0">مرحباً، أحمد محمد</h5>
+            <button class="btn btn-outline-danger btn-sm" onclick="logout()">
+                <i class="bi bi-box-arrow-right me-2"></i>تسجيل خروج
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <h2 class="fw-bold mb-4">
+            <i class="bi bi-car-front text-primary me-2"></i>معلومات عربيتي
+        </h2>
+
+        <!-- Vehicle Info Card -->
+        <div class="row mb-4">
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-header bg-primary text-white py-3">
+                        <h5 class="mb-0"><i class="bi bi-info-circle-fill me-2"></i>بيانات العربية</h5>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <div class="info-item">
+                                    <i class="bi bi-car-front-fill text-primary info-icon"></i>
+                                    <div>
+                                        <small class="text-muted d-block">الموديل</small>
+                                        <strong class="fs-5">تويوتا كامري 2022</strong>
+                                    </div>
+                                </div>
+                                <div class="info-item">
+                                    <i class="bi bi-123 text-success info-icon"></i>
+                                    <div>
+                                        <small class="text-muted d-block">رقم اللوحة</small>
+                                        <span class="badge bg-secondary fs-6">ABC 123</span>
+                                    </div>
+                                </div>
+                                <div class="info-item">
+                                    <i class="bi bi-palette-fill text-info info-icon"></i>
+                                    <div>
+                                        <small class="text-muted d-block">اللون</small>
+                                        <strong>أبيض</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="info-item">
+                                    <i class="bi bi-calendar3 text-warning info-icon"></i>
+                                    <div>
+                                        <small class="text-muted d-block">سنة الصنع</small>
+                                        <strong>2022</strong>
+                                    </div>
+                                </div>
+                                <div class="info-item">
+                                    <i class="bi bi-speedometer2 text-danger info-icon"></i>
+                                    <div>
+                                        <small class="text-muted d-block">عداد الكيلومترات</small>
+                                        <strong>45,000 كم</strong>
+                                    </div>
+                                </div>
+                                <div class="info-item">
+                                    <i class="bi bi-check-circle-fill text-success info-icon"></i>
+                                    <div>
+                                        <small class="text-muted d-block">الحالة</small>
+                                        <span class="badge bg-success">جيدة</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card text-center">
+                    <div class="card-body p-4">
+                        <i class="bi bi-car-front vehicle-icon-large"></i>
+                        <h5 class="mt-3 mb-3 fw-bold">تويوتا كامري</h5>
+                        <button class="btn btn-primary w-100 mb-2" data-bs-toggle="modal" data-bs-target="#requestMaintenanceModal">
+                            <i class="bi bi-plus-circle me-2"></i>طلب صيانة
+                        </button>
+                        <button class="btn btn-outline-secondary w-100" onclick="window.location.href='my-maintenance.html'">
+                            <i class="bi bi-clock-history me-2"></i>عرض السجل
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Maintenance Status -->
+        <div class="row g-4 mb-4">
+            <div class="col-md-4">
+                <div class="card stats-card border-start-custom border-warning">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-clock-history text-warning fs-1 me-3"></i>
+                            <div>
+                                <h3 class="fw-bold mb-0">2</h3>
+                                <p class="text-muted mb-0">صيانة معلقة</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card stats-card border-start-custom border-primary">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-arrow-repeat text-primary fs-1 me-3"></i>
+                            <div>
+                                <h3 class="fw-bold mb-0">1</h3>
+                                <p class="text-muted mb-0">قيد التنفيذ</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card stats-card border-start-custom border-success">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-check-circle text-success fs-1 me-3"></i>
+                            <div>
+                                <h3 class="fw-bold mb-0">15</h3>
+                                <p class="text-muted mb-0">مكتملة</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Maintenance -->
+        <div class="card">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
+                <span class="fw-semibold"><i class="bi bi-tools me-2"></i>آخر عمليات الصيانة</span>
+                <a href="my-maintenance.html" class="btn btn-sm btn-outline-primary">
+                    عرض الكل <i class="bi bi-arrow-left ms-2"></i>
+                </a>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>التاريخ</th>
+                                <th>نوع الصيانة</th>
+                                <th>الميكانيكي</th>
+                                <th>الحالة</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <i class="bi bi-calendar3 text-muted me-2"></i>
+                                    2024-01-15
+                                </td>
+                                <td>
+                                    <i class="bi bi-droplet-fill text-info me-2"></i>
+                                    تغيير زيت
+                                </td>
+                                <td>
+                                    <i class="bi bi-person-circle text-primary me-2"></i>
+                                    محمد أحمد
+                                </td>
+                                <td><span class="badge bg-success">مكتملة</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-info" onclick="viewMaintenanceDetails(1)">
+                                        <i class="bi bi-eye"></i> عرض
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <i class="bi bi-calendar3 text-muted me-2"></i>
+                                    2024-01-10
+                                </td>
+                                <td>
+                                    <i class="bi bi-gear-fill text-primary me-2"></i>
+                                    فحص دوري
+                                </td>
+                                <td>
+                                    <i class="bi bi-person-circle text-primary me-2"></i>
+                                    علي حسن
+                                </td>
+                                <td><span class="badge bg-primary">قيد التنفيذ</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary" onclick="trackMaintenance(2)">
+                                        <i class="bi bi-geo-alt"></i> تتبع
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <i class="bi bi-calendar3 text-muted me-2"></i>
+                                    2024-01-05
+                                </td>
+                                <td>
+                                    <i class="bi bi-tools text-warning me-2"></i>
+                                    تغيير فلتر
+                                </td>
+                                <td>
+                                    <i class="bi bi-person-circle text-primary me-2"></i>
+                                    خالد عمر
+                                </td>
+                                <td><span class="badge bg-warning">معلقة</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-danger" onclick="cancelMaintenance(3)">
+                                        <i class="bi bi-x-circle"></i> إلغاء
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Maintenance Tips -->
+        <div class="card mt-4">
+            <div class="card-header bg-white py-3">
+                <h5 class="mb-0"><i class="bi bi-lightbulb-fill text-warning me-2"></i>نصائح الصيانة الدورية</h5>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="alert alert-info border-start-custom border-info mb-0">
+                            <div class="d-flex align-items-start">
+                                <i class="bi bi-droplet-fill fs-4 me-3"></i>
+                                <div>
+                                    <strong>تغيير الزيت</strong>
+                                    <p class="mb-0 small">كل 5,000 كم أو 6 أشهر</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="alert alert-warning border-start-custom border-warning mb-0">
+                            <div class="d-flex align-items-start">
+                                <i class="bi bi-disc-fill fs-4 me-3"></i>
+                                <div>
+                                    <strong>فحص الفرامل</strong>
+                                    <p class="mb-0 small">كل 10,000 كم</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="alert alert-success border-start-custom border-success mb-0">
+                            <div class="d-flex align-items-start">
+                                <i class="bi bi-speedometer fs-4 me-3"></i>
+                                <div>
+                                    <strong>فحص الإطارات</strong>
+                                    <p class="mb-0 small">شهرياً للضغط والتآكل</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="alert alert-danger border-start-custom border-danger mb-0">
+                            <div class="d-flex align-items-start">
+                                <i class="bi bi-battery-charging fs-4 me-3"></i>
+                                <div>
+                                    <strong>فحص البطارية</strong>
+                                    <p class="mb-0 small">كل 3 أشهر</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Request Maintenance Modal -->
+    <div class="modal fade" id="requestMaintenanceModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="bi bi-plus-circle me-2"></i>طلب صيانة جديد</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="requestMaintenanceForm">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">
+                                    <i class="bi bi-tools me-2"></i>نوع الصيانة
+                                </label>
+                                <select class="form-select" id="maintenanceType" required>
+                                    <option value="">اختر نوع الصيانة</option>
+                                    <option value="oil_change">تغيير زيت</option>
+                                    <option value="periodic">فحص دوري</option>
+                                    <option value="filter">تغيير فلتر</option>
+                                    <option value="brakes">إصلاح فرامل</option>
+                                    <option value="electrical">صيانة كهرباء</option>
+                                    <option value="tires">إطارات</option>
+                                    <option value="battery">بطارية</option>
+                                    <option value="other">أخرى</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">
+                                    <i class="bi bi-exclamation-triangle me-2"></i>الأولوية
+                                </label>
+                                <select class="form-select" id="priority" required>
+                                    <option value="low">منخفضة - يمكن تأجيلها</option>
+                                    <option value="medium" selected>متوسطة - خلال أسبوع</option>
+                                    <option value="high">عالية - بأسرع وقت</option>
+                                    <option value="urgent">عاجلة - فوراً</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">
+                                    <i class="bi bi-calendar3 me-2"></i>التاريخ المفضل
+                                </label>
+                                <input type="date" class="form-control" id="preferredDate" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">
+                                    <i class="bi bi-clock me-2"></i>الوقت المفضل
+                                </label>
+                                <select class="form-select" id="preferredTime">
+                                    <option value="">اختر الوقت</option>
+                                    <option value="morning">صباحاً (8-12)</option>
+                                    <option value="afternoon">ظهراً (12-4)</option>
+                                    <option value="evening">مساءً (4-8)</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-semibold">
+                                    <i class="bi bi-chat-left-text me-2"></i>الوصف التفصيلي
+                                </label>
+                                <textarea class="form-control" id="description" rows="4" placeholder="اكتب وصف تفصيلي للمشكلة أو الصيانة المطلوبة...&#10;مثال: صوت غريب عند الضغط على الفرامل، تسريب زيت من المحرك، إلخ." required></textarea>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="needPickup">
+                                    <label class="form-check-label" for="needPickup">
+                                        <i class="bi bi-truck me-2"></i>أحتاج خدمة نقل العربية من المنزل
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle me-2"></i>إلغاء
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="submitMaintenanceRequest()">
+                        <i class="bi bi-send me-2"></i>إرسال الطلب
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Set minimum date to today
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('preferredDate').setAttribute('min', today);
+        });
+
+        // Logout function
+        function logout() {
+            if (confirm('هل أنت متأكد من تسجيل الخروج؟')) {
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('userRole');
+                window.location.href = 'login.html';
+            }
+        }
+
+        // Submit maintenance request
+        function submitMaintenanceRequest() {
+            const form = document.getElementById('requestMaintenanceForm');
+            
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            const maintenanceType = document.getElementById('maintenanceType').value;
+            const priority = document.getElementById('priority').value;
+            const preferredDate = document.getElementById('preferredDate').value;
+            const preferredTime = document.getElementById('preferredTime').value;
+            const description = document.getElementById('description').value;
+            const needPickup = document.getElementById('needPickup').checked;
+
+            // Here you would normally send this data to a server
+            console.log('Maintenance Request:', {
+                maintenanceType,
+                priority,
+                preferredDate,
+                preferredTime,
+                description,
+                needPickup
+            });
+
+            // Show success message
+            alert('✅ تم إرسال طلب الصيانة بنجاح!\n\nسيتم التواصل معك قريباً لتأكيد الموعد.\nرقم الطلب: #M0' + Math.floor(Math.random() * 1000));
+            
+            // Close modal and reset form
+            const modal = bootstrap.Modal.getInstance(document.getElementById('requestMaintenanceModal'));
+            modal.hide();
+            form.reset();
+        }
+
+        // View maintenance details
+        function viewMaintenanceDetails(id) {
+            alert('عرض تفاصيل الصيانة #' + id + '\n\nسيتم فتح صفحة التفاصيل الكاملة...');
+            // Redirect to maintenance details page
+            // window.location.href = 'my-maintenance.html?id=' + id;
+        }
+
+        // Track maintenance
+        function trackMaintenance(id) {
+            alert('تتبع الصيانة #' + id + '\n\nالحالة: قيد التنفيذ\nالتقدم: 60%\nالميكانيكي: علي حسن\nالوقت المتبقي المتوقع: ساعتين');
+        }
+
+        // Cancel maintenance
+        function cancelMaintenance(id) {
+            if (confirm('هل أنت متأكد من إلغاء طلب الصيانة #' + id + '؟\n\nملاحظة: لا يمكن التراجع عن هذا الإجراء')) {
+                alert('✅ تم إلغاء طلب الصيانة بنجاح');
+                // Reload page to reflect changes
+                location.reload();
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,430 @@
+<!-- ============================================ -->
+<!-- FILE 10: add-maintenance.html (TASK 7 - Add Maintenance) -->
+<!-- ============================================ -->
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إضافة عملية صيانة</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="styles/main.css">
+<link rel="stylesheet" href="main.css">
+
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-brand text-white">
+            <h4 class="fw-bold"><i class="bi bi-gear-fill me-2"></i>نظام الصيانة</h4>
+            <p class="small text-muted">إدارة متكاملة</p>
+        </div>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link" href="dashboard.html">
+                    <i class="bi bi-speedometer2 me-2"></i>لوحة التحكم
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="vehicles.html">
+                    <i class="bi bi-car-front me-2"></i>العربيات
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="users.html">
+                    <i class="bi bi-people me-2"></i>المستخدمين
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="spare-parts.html">
+                    <i class="bi bi-gear me-2"></i>قطع الغيار
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="maintenance.html">
+                    <i class="bi bi-tools me-2"></i>الصيانة
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="add-maintenance.html">
+                    <i class="bi bi-plus-circle me-2"></i>إضافة صيانة
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-light bg-light fixed-top">
+        <div class="container-fluid">
+            <h5 class="mb-0">إضافة عملية صيانة جديدة</h5>
+            <button class="btn btn-outline-danger btn-sm" onclick="logout()">
+                <i class="bi bi-box-arrow-right me-2"></i>تسجيل خروج
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card">
+                    <div class="card-header bg-primary text-white py-3">
+                        <h5 class="mb-0">
+                            <i class="bi bi-plus-circle me-2"></i>إضافة عملية صيانة جديدة
+                        </h5>
+                    </div>
+                    <div class="card-body p-4">
+                        <form id="addMaintenanceForm">
+                            <!-- Vehicle Information -->
+                            <div class="mb-4">
+                                <h6 class="fw-bold text-primary mb-3">
+                                    <i class="bi bi-car-front me-2"></i>معلومات العربية
+                                </h6>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label fw-semibold">
+                                            اختر العربية <span class="text-danger">*</span>
+                                        </label>
+                                        <select class="form-select" id="vehicleSelect" required>
+                                            <option value="">-- اختر العربية --</option>
+                                            <option value="1">تويوتا كامري - ABC 123</option>
+                                            <option value="2">هوندا أكورد - XYZ 456</option>
+                                            <option value="3">نيسان ألتيما - DEF 789</option>
+                                            <option value="4">مازدا 6 - GHI 012</option>
+                                            <option value="5">كيا أوبتيما - JKL 345</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label fw-semibold">
+                                            رقم العداد (كم) <span class="text-danger">*</span>
+                                        </label>
+                                        <input type="number" class="form-control" id="mileage" placeholder="مثال: 50000" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr>
+
+                            <!-- Maintenance Details -->
+                            <div class="mb-4">
+                                <h6 class="fw-bold text-primary mb-3">
+                                    <i class="bi bi-tools me-2"></i>تفاصيل الصيانة
+                                </h6>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label fw-semibold">
+                                            نوع الصيانة <span class="text-danger">*</span>
+                                        </label>
+                                        <select class="form-select" id="maintenanceType" required>
+                                            <option value="">-- اختر النوع --</option>
+                                            <option value="oil_change">تغيير زيت</option>
+                                            <option value="brake_check">فحص فرامل</option>
+                                            <option value="tire_change">تغيير إطارات</option>
+                                            <option value="periodic">صيانة دورية</option>
+                                            <option value="battery">فحص بطارية</option>
+                                            <option value="engine">صيانة محرك</option>
+                                            <option value="other">أخرى</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label fw-semibold">
+                                            الأولوية <span class="text-danger">*</span>
+                                        </label>
+                                        <select class="form-select" id="priority" required>
+                                            <option value="">-- اختر الأولوية --</option>
+                                            <option value="high">عاجل - أولوية عالية</option>
+                                            <option value="medium">متوسط - أولوية متوسطة</option>
+                                            <option value="low">عادي - أولوية منخفضة</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label fw-semibold">
+                                            تاريخ الصيانة <span class="text-danger">*</span>
+                                        </label>
+                                        <input type="date" class="form-control" id="maintenanceDate" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label fw-semibold">
+                                            الوقت المتوقع (بالساعات)
+                                        </label>
+                                        <input type="number" class="form-control" id="estimatedTime" placeholder="مثال: 2" step="0.5">
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">
+                                        وصف المشكلة / العمل المطلوب <span class="text-danger">*</span>
+                                    </label>
+                                    <textarea class="form-control" id="description" rows="4" placeholder="اكتب وصف تفصيلي للمشكلة أو العمل المطلوب..." required></textarea>
+                                </div>
+                            </div>
+
+                            <hr>
+
+                            <!-- Mechanic Assignment -->
+                            <div class="mb-4">
+                                <h6 class="fw-bold text-primary mb-3">
+                                    <i class="bi bi-person-gear me-2"></i>تعيين الميكانيكي
+                                </h6>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label fw-semibold">
+                                            اختر الميكانيكي <span class="text-danger">*</span>
+                                        </label>
+                                        <select class="form-select" id="mechanicSelect" required>
+                                            <option value="">-- اختر الميكانيكي --</option>
+                                            <option value="1">أحمد محمد - متخصص محركات</option>
+                                            <option value="2">فاطمة علي - متخصصة كهرباء</option>
+                                            <option value="3">خالد حسن - متخصص فرامل</option>
+                                            <option value="4">سارة أحمد - صيانة عامة</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label fw-semibold">
+                                            الحالة الأولية
+                                        </label>
+                                        <select class="form-select" id="statusSelect">
+                                            <option value="pending">معلقة</option>
+                                            <option value="in_progress">قيد التنفيذ</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr>
+
+                            <!-- Spare Parts -->
+                            <div class="mb-4">
+                                <h6 class="fw-bold text-primary mb-3">
+                                    <i class="bi bi-gear me-2"></i>قطع الغيار المطلوبة
+                                </h6>
+                                
+                                <div id="sparePartsContainer">
+                                    <div class="row spare-part-row mb-2">
+                                        <div class="col-md-5">
+                                            <select class="form-select form-select-sm">
+                                                <option value="">-- اختر قطعة الغيار --</option>
+                                                <option value="1">فلتر زيت</option>
+                                                <option value="2">بواجي</option>
+                                                <option value="3">تيل فرامل</option>
+                                                <option value="4">فلتر هواء</option>
+                                                <option value="5">زيت محرك</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="number" class="form-control form-control-sm" placeholder="الكمية" min="1" value="1">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="number" class="form-control form-control-sm" placeholder="السعر" step="0.01" readonly>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <button type="button" class="btn btn-sm btn-danger" onclick="removePartRow(this)">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <button type="button" class="btn btn-sm btn-outline-primary" onclick="addPartRow()">
+                                    <i class="bi bi-plus-circle me-1"></i>إضافة قطعة غيار
+                                </button>
+                            </div>
+
+                            <hr>
+
+                            <!-- Cost Estimation -->
+                            <div class="mb-4">
+                                <h6 class="fw-bold text-primary mb-3">
+                                    <i class="bi bi-cash-stack me-2"></i>التكلفة المتوقعة
+                                </h6>
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label fw-semibold">تكلفة العمالة (ريال)</label>
+                                        <input type="number" class="form-control" id="laborCost" placeholder="0.00" step="0.01" value="0">
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label fw-semibold">تكلفة القطع (ريال)</label>
+                                        <input type="number" class="form-control" id="partsCost" placeholder="0.00" step="0.01" readonly value="0">
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label fw-semibold">الإجمالي (ريال)</label>
+                                        <input type="number" class="form-control" id="totalCost" placeholder="0.00" step="0.01" readonly value="0">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr>
+
+                            <!-- Additional Notes -->
+                            <div class="mb-4">
+                                <h6 class="fw-bold text-primary mb-3">
+                                    <i class="bi bi-journal-text me-2"></i>ملاحظات إضافية
+                                </h6>
+                                <textarea class="form-control" id="notes" rows="3" placeholder="أي ملاحظات إضافية أو تعليمات خاصة..."></textarea>
+                            </div>
+
+                            <!-- Notification Settings -->
+                            <div class="mb-4">
+                                <h6 class="fw-bold text-primary mb-3">
+                                    <i class="bi bi-bell me-2"></i>إعدادات الإشعارات
+                                </h6>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="notifyDriver" checked>
+                                    <label class="form-check-label" for="notifyDriver">
+                                        إرسال إشعار للسائق
+                                    </label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="notifyMechanic" checked>
+                                    <label class="form-check-label" for="notifyMechanic">
+                                        إرسال إشعار للميكانيكي
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="emailNotification">
+                                    <label class="form-check-label" for="emailNotification">
+                                        إرسال إشعار عبر البريد الإلكتروني
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="d-flex gap-2 justify-content-end mt-4">
+                                <a href="maintenance.html" class="btn btn-secondary">
+                                    <i class="bi bi-x-circle me-2"></i>إلغاء
+                                </a>
+                                <button type="button" class="btn btn-outline-primary" onclick="saveDraft()">
+                                    <i class="bi bi-save me-2"></i>حفظ كمسودة
+                                </button>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="bi bi-check-circle me-2"></i>إضافة عملية الصيانة
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Help Card -->
+                <div class="card mt-4 border-info">
+                    <div class="card-body">
+                        <h6 class="fw-bold text-info mb-3">
+                            <i class="bi bi-info-circle me-2"></i>إرشادات الاستخدام
+                        </h6>
+                        <ul class="small mb-0">
+                            <li>تأكد من اختيار العربية الصحيحة قبل إضافة الصيانة</li>
+                            <li>حدد نوع الصيانة والأولوية بدقة لتسهيل المتابعة</li>
+                            <li>اكتب وصفاً تفصيلياً للمشكلة لمساعدة الميكانيكي</li>
+                            <li>يمكنك إضافة عدة قطع غيار حسب الحاجة</li>
+                            <li>التكلفة الإجمالية ستحسب تلقائياً</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/navigation.js"></script>
+    <script>
+        // Set today's date as default
+        document.getElementById('maintenanceDate').valueAsDate = new Date();
+
+        // Add spare part row
+        function addPartRow() {
+            const container = document.getElementById('sparePartsContainer');
+            const newRow = document.createElement('div');
+            newRow.className = 'row spare-part-row mb-2';
+            newRow.innerHTML = `
+                <div class="col-md-5">
+                    <select class="form-select form-select-sm">
+                        <option value="">-- اختر قطعة الغيار --</option>
+                        <option value="1">فلتر زيت</option>
+                        <option value="2">بواجي</option>
+                        <option value="3">تيل فرامل</option>
+                        <option value="4">فلتر هواء</option>
+                        <option value="5">زيت محرك</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <input type="number" class="form-control form-control-sm" placeholder="الكمية" min="1" value="1">
+                </div>
+                <div class="col-md-3">
+                    <input type="number" class="form-control form-control-sm" placeholder="السعر" step="0.01" readonly>
+                </div>
+                <div class="col-md-1">
+                    <button type="button" class="btn btn-sm btn-danger" onclick="removePartRow(this)">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </div>
+            `;
+            container.appendChild(newRow);
+        }
+
+        // Remove spare part row
+        function removePartRow(button) {
+            const row = button.closest('.spare-part-row');
+            row.remove();
+            calculateTotalCost();
+        }
+
+        // Calculate total cost
+        function calculateTotalCost() {
+            const laborCost = parseFloat(document.getElementById('laborCost').value) || 0;
+            const partsCost = parseFloat(document.getElementById('partsCost').value) || 0;
+            const total = laborCost + partsCost;
+            document.getElementById('totalCost').value = total.toFixed(2);
+        }
+
+        // Update costs on labor change
+        document.getElementById('laborCost').addEventListener('input', calculateTotalCost);
+
+        // Save draft
+        function saveDraft() {
+            alert('تم حفظ المسودة بنجاح!');
+        }
+
+        // Form submission
+        document.getElementById('addMaintenanceForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const vehicle = document.getElementById('vehicleSelect').value;
+            const maintenanceType = document.getElementById('maintenanceType').value;
+            const mechanic = document.getElementById('mechanicSelect').value;
+            
+            // Validation
+            if (!vehicle || !maintenanceType || !mechanic) {
+                alert('يرجى ملء جميع الحقول المطلوبة!');
+                return;
+            }
+            
+            // Success message
+            alert('تم إضافة عملية الصيانة بنجاح!');
+            window.location.href = 'maintenance.html';
+        });
+
+        // Update maintenance type description
+        document.getElementById('maintenanceType').addEventListener('change', function() {
+            const type = this.value;
+            const descriptions = {
+                'oil_change': 'تغيير زيت المحرك والفلتر',
+                'brake_check': 'فحص وصيانة نظام الفرامل',
+                'tire_change': 'تغيير أو تدوير الإطارات',
+                'periodic': 'صيانة دورية شاملة',
+                'battery': 'فحص واختبار البطارية',
+                'engine': 'صيانة وإصلاح المحرك'
+            };
+            
+            if (descriptions[type]) {
+                document.getElementById('description').placeholder = descriptions[type];
+            }
+        });
+    </script>
+</body>
+</html>

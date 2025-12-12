@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة قطع الغيار</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="styles/main.css">
+<link rel="stylesheet" href="main.css">
+
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-brand text-white">
+            <h4 class="fw-bold"><i class="bi bi-gear-fill me-2"></i>نظام الصيانة</h4>
+            <p class="small text-muted">إدارة متكاملة</p>
+        </div>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link" href="dashboard.html">
+                    <i class="bi bi-speedometer2 me-2"></i>لوحة التحكم
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="vehicles.html">
+                    <i class="bi bi-car-front me-2"></i>العربيات
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="users.html">
+                    <i class="bi bi-people me-2"></i>المستخدمين
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="spare-parts.html">
+                    <i class="bi bi-gear me-2"></i>قطع الغيار
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="maintenance.html">
+                    <i class="bi bi-tools me-2"></i>الصيانة
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="add-maintenance.html">
+                    <i class="bi bi-plus-circle me-2"></i>إضافة صيانة
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-light bg-light fixed-top">
+        <div class="container-fluid">
+            <h5 class="mb-0">إدارة قطع الغيار</h5>
+            <button class="btn btn-outline-danger btn-sm" onclick="logout()">
+                <i class="bi bi-box-arrow-right me-2"></i>تسجيل خروج
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <h2 class="fw-bold mb-4">
+            <i class="bi bi-gear text-primary me-2"></i>إدارة قطع الغيار
+        </h2>
+
+        <!-- Stats Cards -->
+        <div class="row g-4 mb-4">
+            <div class="col-md-3">
+                <div class="card stats-card">
+                    <div class="card-body p-4">
+                        <div class="rounded d-inline-flex p-3 mb-3" style="background-color: #0d6efd;">
+                            <i class="bi bi-box-seam text-white fs-2"></i>
+                        </div>
+                        <h3 class="fw-bold">256</h3>
+                        <p class="text-muted mb-0">إجمالي القطع</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card stats-card">
+                    <div class="card-body p-4">
+                        <div class="rounded d-inline-flex p-3 mb-3" style="background-color: #198754;">
+                            <i class="bi bi-check-circle text-white fs-2"></i>
+                        </div>
+                        <h3 class="fw-bold">189</h3>
+                        <p class="text-muted mb-0">متوفر</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card stats-card">
+                    <div class="card-body p-4">
+                        <div class="rounded d-inline-flex p-3 mb-3" style="background-color: #ffc107;">
+                            <i class="bi bi-exclamation-triangle text-white fs-2"></i>
+                        </div>
+                        <h3 class="fw-bold">45</h3>
+                        <p class="text-muted mb-0">مخزون منخفض</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card stats-card">
+                    <div class="card-body p-4">
+                        <div class="rounded d-inline-flex p-3 mb-3" style="background-color: #dc3545;">
+                            <i class="bi bi-x-circle text-white fs-2"></i>
+                        </div>
+                        <h3 class="fw-bold">22</h3>
+                        <p class="text-muted mb-0">غير متوفر</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
+                <span class="fw-semibold">قائمة قطع الغيار</span>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPartModal">
+                    <i class="bi bi-plus-circle me-2"></i>إضافة قطعة غيار
+                </button>
+            </div>
+            <div class="card-body">
+                <!-- Search and Filter -->
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" placeholder="البحث عن قطعة غيار...">
+                    </div>
+                    <div class="col-md-6">
+                        <select class="form-select">
+                            <option value="">جميع الحالات</option>
+                            <option value="available">متوفر</option>
+                            <option value="low">مخزون منخفض</option>
+                            <option value="out">غير متوفر</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>الكود</th>
+                                <th>اسم القطعة</th>
+                                <th>الفئة</th>
+                                <th>الكمية</th>
+                                <th>السعر</th>
+                                <th>الحالة</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>#SP001</td>
+                                <td>فلتر زيت</td>
+                                <td>فلاتر</td>
+                                <td>150</td>
+                                <td>25 ريال</td>
+                                <td><span class="badge bg-success">متوفر</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-info me-2" onclick="viewPart(1)">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-warning me-2" onclick="editPart(1)">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-danger" onclick="deletePart(1)">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#SP002</td>
+                                <td>بواجي</td>
+                                <td>كهرباء</td>
+                                <td>8</td>
+                                <td>45 ريال</td>
+                                <td><span class="badge bg-warning text-dark">مخزون منخفض</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-info me-2" onclick="viewPart(2)">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-warning me-2" onclick="editPart(2)">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-danger" onclick="deletePart(2)">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#SP003</td>
+                                <td>تيل فرامل</td>
+                                <td>فرامل</td>
+                                <td>0</td>
+                                <td>180 ريال</td>
+                                <td><span class="badge bg-danger">غير متوفر</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-info me-2" onclick="viewPart(3)">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-warning me-2" onclick="editPart(3)">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-danger" onclick="deletePart(3)">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#SP004</td>
+                                <td>فلتر هواء</td>
+                                <td>فلاتر</td>
+                                <td>95</td>
+                                <td>35 ريال</td>
+                                <td><span class="badge bg-success">متوفر</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-info me-2" onclick="viewPart(4)">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-warning me-2" onclick="editPart(4)">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-danger" onclick="deletePart(4)">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Part Modal -->
+    <div class="modal fade" id="addPartModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">إضافة قطعة غيار جديدة</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addPartForm">
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">اسم القطعة</label>
+                            <input type="text" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">الفئة</label>
+                            <select class="form-select" required>
+                                <option value="">اختر الفئة</option>
+                                <option value="filters">فلاتر</option>
+                                <option value="brakes">فرامل</option>
+                                <option value="electrical">كهرباء</option>
+                                <option value="engine">محرك</option>
+                                <option value="other">أخرى</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">الكمية</label>
+                            <input type="number" class="form-control" min="0" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">السعر (ريال)</label>
+                            <input type="number" class="form-control" step="0.01" min="0" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">الوصف</label>
+                            <textarea class="form-control" rows="3"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="button" class="btn btn-primary" onclick="savePart()">حفظ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/navigation.js"></script>
+    <script>
+        function savePart() {
+            alert('تم إضافة قطعة الغيار بنجاح!');
+            bootstrap.Modal.getInstance(document.getElementById('addPartModal')).hide();
+        }
+        function viewPart(id) {
+            alert('عرض تفاصيل قطعة الغيار #' + id);
+        }
+        function editPart(id) {
+            alert('تعديل قطعة الغيار #' + id);
+        }
+        function deletePart(id) {
+            if(confirm('هل أنت متأكد من الحذف؟')) {
+                alert('تم حذف قطعة الغيار #' + id);
+            }
+        }
+    </script>
+</body>
+</html>
